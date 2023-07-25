@@ -69,6 +69,7 @@ const SignUp = () => {
   const navigation = useNavigation();
 
   const handleSignUp = async (values) => {
+    console.log("I'm working");
     const body = { ...values, dob: formatDateOfBirth(values.dob) };
     console.log("I'm working");
     try {
@@ -82,6 +83,7 @@ const SignUp = () => {
           },
         }
       );
+
       if (response.ok) navigation.navigate("VerifyEmail");
     } catch (error) {
       console.log(error);
@@ -208,7 +210,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    // fontWeight: "bold",
     marginBottom: 20,
     top: -30,
   },
@@ -217,15 +218,7 @@ const styles = StyleSheet.create({
     color: "#FF7F50",
     marginBottom: 100,
   },
-  // pickerContainer: {
-  //   width: "100%",
-  //   marginBottom: 10,
-  // },
-  // pickerStyle: {
-  //   height: 48,
-  //   borderWidth: 1,
-  //   borderColor: "gray",
-  // },
+
   label: {
     fontSize: 16,
     marginBottom: 5,

@@ -13,7 +13,7 @@ const Home = () => {
   };
 
   const navigate = () => {
-    navigation.navigate("ReportIncidentNext");
+    navigation.navigate("ReportIncident");
   };
 
   return (

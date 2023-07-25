@@ -9,8 +9,9 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+// import DocumentPicker from "@react-native-document-picker";
 
-const ReportIncidentNext = () => {
+const ReportIncident = () => {
   const [isReportingForSelf, setIsReportingForSelf] = useState(true);
   const [victimName, setVictimName] = useState("");
   const [knowsOffender, setKnowsOffender] = useState(true);
@@ -21,7 +22,8 @@ const ReportIncidentNext = () => {
   const [time, setTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [location, setLocation] = useState("");
-
+  const [evidenceFiles, setEvidenceFiles] = useState([]);
+  const [description, setDescription] = useState("");
   const handleIsReportingChange = (value) => {
     setIsReportingForSelf(value === "Yes");
   };
@@ -64,6 +66,34 @@ const ReportIncidentNext = () => {
 
   const handleLocationChange = (text) => {
     setLocation(text);
+  };
+
+  const handleUploadFiles = async () => {
+    try {
+      const result = await DocumentPicker.pickMultiple({
+        type: [DocumentPicker.types.allFiles],
+      });
+      setEvidenceFiles(result);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log("User cancelled file upload");
+      } else {
+        throw err;
+      }
+    }
+  };
+
+  const handleAdditionalUploadFiles = async () => {
+    try {
+      const result = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      setEvidenceFiles((prevFiles) => [...prevFiles, result]);
+    } catch (err) {
+      if (!DocumentPicker.isCancel(err)) {
+        console.log(err);
+      }
+    }
   };
   const handleNext = () => {
     navigate();
@@ -162,7 +192,27 @@ const ReportIncidentNext = () => {
         value={location}
         onChangeText={handleLocationChange}
       />
+      <Text style={styles.label}>Description of Incident</Text>
+      <TextInput multiline={true} numberOfLines={4} />
 
+      {evidenceFiles.length > 0 && (
+        <View style={styles.evidenceContainer}>
+          {evidenceFiles.map((file, index) => (
+            <Text key={index} style={styles.evidenceText}>
+              {file.name}
+            </Text>
+          ))}
+        </View>
+      )}
+      <TouchableOpacity style={styles.uploadButton} onPress={handleUploadFiles}>
+        <Text style={styles.uploadButtonText}>Upload Evidence</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.uploadButton}
+        onPress={handleAdditionalUploadFiles}
+      >
+        <Text style={styles.uploadButtonText}>+ add more evidence files</Text>
+      </TouchableOpacity>
       <View style={styles.btnContainer}>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText} onPress={handleNext}>
@@ -208,20 +258,45 @@ const styles = StyleSheet.create({
     lineHeight: 50,
   },
   picker: {
-    backgroundColor: "gray",
+    backgroundColor: "#D9D9D9",
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
   },
   title: {
-    // flex: 1,
     fontSize: 28,
     fontWeight: "bold",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 15,
-    // top: -30,
+  },
+  uploadButton: {
+    backgroundColor: "#D0D0D0",
+    height: 48,
+    width: 200,
+    borderRadius: 4,
+    marginBottom: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    // right: 100,
+  },
+  uploadButtonText: {
+    color: "#fff",
+    fontSize: 18,
+  },
+  buttonText: {
+    color: "#fff",
+    paddingHorizontal: "35%",
+    right: -20,
+    fontSize: 16,
+    lineHeight: 50,
+  },
+
+  evidenceText: {
+    color: "#fff",
+    fontSize: 16,
+    marginBottom: 8,
   },
 });
 
-export default ReportIncidentNext;
+export default ReportIncident;

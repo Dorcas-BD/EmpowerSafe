@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
-import { Form } from "formik";
+import Form from "../components/Form";
 import FormField from "../components/FormField";
 import SubmitButton from "../components/SubmitButton";
 
@@ -18,8 +18,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
 
   const handleSignIn = () => {
     navigate("Home");
@@ -42,7 +42,7 @@ const SignIn = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Email Verified</Text>
       <Text style={styles.title}>Sign In</Text>
-      {/* <Form
+      <Form
         initialValues={{}}
         validationSchema={validationSchema}
         onSubmit={handleSignIn}
@@ -58,8 +58,8 @@ const SignIn = () => {
           secureTextEntry
         />
         <SubmitButton title="Sign In" />
-      </Form> */}
-      <TextInput
+      </Form>
+      {/* <TextInput
         style={styles.input}
         placeholder="Email address"
         value={email}
@@ -81,7 +81,7 @@ const SignIn = () => {
             Sign In
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <TouchableOpacity onPress={handleForgotPassword}>
         <Text style={styles.forgotPasswordText}>Forgot password?</Text>
